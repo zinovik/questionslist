@@ -1,3 +1,35 @@
+<div>
+  <label for="inputQuestionName">question name</label>:<br>
+  <input type="text" [(ngModel)]="newQuestion.name" id="inputQuestionName"><br>
+
+  <label for="inputQuestionText">question text</label>:<br>
+  <input type="text" [(ngModel)]="newQuestion.text" id="inputQuestionText"><br>
+
+  <label for="inputQuestionDifficulty">question difficulty</label>:<br>
+  <input type="text" [(ngModel)]="newQuestion.difficulty" id="inputQuestionDifficulty"><br>
+
+  <label for="inputQuestionAnswer">question answer</label>:<br>
+  <input type="text" [(ngModel)]="newQuestion.answer" id="inputQuestionAnswer"><br>
+
+  <label for="inputQuestionCategory">question category</label>:<br>
+  <input type="text" [(ngModel)]="newQuestion.category" id="inputQuestionCategory"><br>
+
+  <br>
+  <button (click)="createQuestion()">create question</button>
+</div><br>
+
+<div>
+  <label for="inputCategoryName">category name</label>:<br>
+  <input type="text" [(ngModel)]="newCategory.name" id="inputCategoryName"><br>
+
+  <label for="inputCategoryParent">category parent</label>:<br>
+  <input type="text" [(ngModel)]="newCategory.parent" id="inputCategoryParent"><br>
+
+  <br>
+  <button (click)="createCategory()">create category</button><br><br>
+</div><br>
+
+questions:
 <div *ngFor="let question of questions">
   {{ question.id }},
   {{ question.name }},
@@ -5,4 +37,13 @@
   {{ question.answer }},
   {{ question.difficulty }},
   {{ question.category }}
+  <button (click)="deleteQuestion(question.id)">delete</button>
+</div><br>
+
+categories:
+<div *ngFor="let category of categories">
+  {{ category.id }},
+  {{ category.name }},
+  {{ category.parent }}
+  <button (click)="deleteCategory(category.id)">delete</button>
 </div>
