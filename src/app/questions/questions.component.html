@@ -64,6 +64,9 @@
       <button (click)="cancelWorkWithCategory()">cancel</button>
     </div>
   </div>
-</div>
+</div><br>
+
+<label for="questionsFilter">questions filter</label>:<br>
+<input type="text" [(ngModel)]="filter" (ngModelChange)="filterChanged()" id="questionsFilter">
 
 <app-questions-tree [treeNodes]="treeNodes" (actions)="action($event)"></app-questions-tree>

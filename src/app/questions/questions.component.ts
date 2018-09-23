@@ -30,6 +30,8 @@ export class QuestionsComponent implements OnInit {
   };
   newCategory: Category = <Category>{};
 
+  filter: string;
+
   constructor(
     private questionslistApiService: QuestionslistApiService,
   ) {
@@ -69,6 +71,13 @@ export class QuestionsComponent implements OnInit {
     });
 
     this.questions.forEach(question => {
+      if (this.filter) {
+        if (question.name.indexOf(this.filter) === -1
+          && question.text.indexOf(this.filter) === -1
+          && question.answer.indexOf(this.filter) === -1) {
+          return;
+        }
+      }
       if (mapNodes[question.category]) {
         mapNodes[question.category].addQuestion(question);
       }
@@ -179,6 +188,10 @@ export class QuestionsComponent implements OnInit {
         break;
       }
     }
+  }
+
+  filterChanged() {
+    this.createTree();
   }
 
   setDefaultCategory() {
