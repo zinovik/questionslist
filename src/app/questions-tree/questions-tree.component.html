@@ -1,0 +1,12 @@
+<ul>
+  <li *ngFor="let treeNode of treeNodes">
+    <span><input type="checkbox" [checked]="treeNode.checked" (click)="treeNode.check()" /></span>
+    <span (click)="treeNode.toggle()">{{ treeNode.name }}</span>
+    <div *ngIf="treeNode.expanded">
+      <ul>
+        <li *ngFor="let question of treeNode.questions">{{ question.name }}</li>
+      </ul>
+      <app-questions-tree [treeNodes]="treeNode.treeNodes"></app-questions-tree>
+    </div>
+  </li>
+</ul>
