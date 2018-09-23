@@ -39,13 +39,19 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.questionslistApiService.getQuestions()
-      .subscribe((questions: Question[]) => {
-        this.questions = questions;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.questions = data;
         this.createTree();
       });
     this.questionslistApiService.getCategories()
-      .subscribe((categories: Category[]) => {
-        this.categories = categories;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.categories = data;
         this.setDefaultCategory();
         this.createTree();
       });
@@ -72,9 +78,11 @@ export class QuestionsComponent implements OnInit {
 
     this.questions.forEach(question => {
       if (this.filter) {
-        if (question.name.indexOf(this.filter) === -1
-          && question.text.indexOf(this.filter) === -1
-          && question.answer.indexOf(this.filter) === -1) {
+        const filter = this.filter.toLowerCase();
+        if (question.name.toLowerCase().indexOf(filter) === -1
+          && question.text.toLowerCase().indexOf(filter) === -1
+          && question.answer.toLowerCase().indexOf(filter) === -1
+          && question.tags.toLowerCase().indexOf(filter) === -1) {
           return;
         }
       }
@@ -95,8 +103,11 @@ export class QuestionsComponent implements OnInit {
 
   createQuestion() {
     this.questionslistApiService.createQuestion(this.newQuestion)
-      .subscribe((questions: Question[]) => {
-        this.questions = questions;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.questions = data;
         this.cancelWorkWithQuestion();
         this.createTree();
       });
@@ -104,8 +115,11 @@ export class QuestionsComponent implements OnInit {
 
   createCategory() {
     this.questionslistApiService.createCategory(this.newCategory)
-      .subscribe((categories: Category[]) => {
-        this.categories = categories;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.categories = data;
         this.cancelWorkWithCategory();
         this.setDefaultCategory();
         this.createTree();
@@ -130,8 +144,11 @@ export class QuestionsComponent implements OnInit {
     this.showNewQuestionForm = false;
     this.editQuestionMode = false;
     this.questionslistApiService.updateQuestion(this.newQuestion)
-      .subscribe((questions: Question[]) => {
-        this.questions = questions;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.questions = data;
         this.cancelWorkWithQuestion();
         this.createTree();
       });
@@ -141,8 +158,11 @@ export class QuestionsComponent implements OnInit {
     this.showNewCategoryForm = false;
     this.editCategoryMode = false;
     this.questionslistApiService.updateCategory(this.newCategory)
-      .subscribe((categories: Category[]) => {
-        this.categories = categories;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.categories = data;
         this.cancelWorkWithCategory();
         this.setDefaultCategory();
         this.createTree();
@@ -151,16 +171,22 @@ export class QuestionsComponent implements OnInit {
 
   deleteQuestion(id) {
     this.questionslistApiService.deleteQuestion(id)
-      .subscribe((questions: Question[]) => {
-        this.questions = questions;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.questions = data;
         this.createTree();
       });
   }
 
   deleteCategory(id) {
     this.questionslistApiService.deleteCategory(id)
-      .subscribe((categories: Category[]) => {
-        this.categories = categories;
+      .subscribe(({ error, data }) => {
+        if (error) {
+          console.log(error);
+        }
+        this.categories = data;
         this.setDefaultCategory();
         this.createTree();
       });

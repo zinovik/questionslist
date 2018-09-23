@@ -1,4 +1,7 @@
-<div>
+<div *ngIf="!loggedIn">
   <button (click)="googleLogin()">login with google</button>
+</div>
+<div *ngIf="loggedIn">
+  logged in
 </div><br>
 <app-questions></app-questions>

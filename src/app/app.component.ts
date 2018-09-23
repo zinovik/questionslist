@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
   googleLogin() {
     const clientId = '1094841489541-toms881mmbi6m04aco86qg0h43pb4iuo.apps.googleusercontent.com';
-    const redirectUrl = `https//${window.location.host}/`;
+    const redirectUrl = `https://${window.location.host}/`;
     const loginUrl = `https://accounts.google.com/o/oauth2/auth` +
       `?scope=email profile` +
       `&client_id=${clientId}` +
