@@ -13,11 +13,21 @@ import { TreeNode } from '../tree-node';
 })
 export class QuestionsComponent implements OnInit {
 
+  DIFFICULTIES = [1, 2, 3, 4, 5];
+
   questions: Question[];
   categories: Category[];
   treeNodes: TreeNode[];
 
-  newQuestion: Question = <Question>{};
+  showNewQuestionForm = false;
+  showNewCategoryForm = false;
+
+  editQuestionMode = false;
+  editCategoryMode = false;
+
+  newQuestion: Question = <Question>{
+    difficulty: 1,
+  };
   newCategory: Category = <Category>{};
 
   constructor(
@@ -34,6 +44,7 @@ export class QuestionsComponent implements OnInit {
     this.questionslistApiService.getCategories()
       .subscribe((categories: Category[]) => {
         this.categories = categories;
+        this.setDefaultCategory();
         this.createTree();
       });
   }
@@ -77,6 +88,7 @@ export class QuestionsComponent implements OnInit {
     this.questionslistApiService.createQuestion(this.newQuestion)
       .subscribe((questions: Question[]) => {
         this.questions = questions;
+        this.cancelWorkWithQuestion();
         this.createTree();
       });
   }
@@ -85,18 +97,47 @@ export class QuestionsComponent implements OnInit {
     this.questionslistApiService.createCategory(this.newCategory)
       .subscribe((categories: Category[]) => {
         this.categories = categories;
+        this.cancelWorkWithCategory();
+        this.setDefaultCategory();
         this.createTree();
       });
   }
 
+  cancelWorkWithQuestion() {
+    this.showNewQuestionForm = false;
+    this.editQuestionMode = false;
+    this.newQuestion = <Question>{ difficulty: 1 };
+    this.setDefaultCategory();
+  }
+
+  cancelWorkWithCategory() {
+    this.showNewCategoryForm = false;
+    this.editCategoryMode = false;
+    this.newCategory = <Category>{};
+    this.setDefaultCategory();
+  }
+
   updateQuestion() {
-    console.log(this.newQuestion);
-    this.createTree();
+    this.showNewQuestionForm = false;
+    this.editQuestionMode = false;
+    this.questionslistApiService.updateQuestion(this.newQuestion)
+      .subscribe((questions: Question[]) => {
+        this.questions = questions;
+        this.cancelWorkWithQuestion();
+        this.createTree();
+      });
   }
 
   updateCategory() {
-    console.log(this.newCategory);
-    this.createTree();
+    this.showNewCategoryForm = false;
+    this.editCategoryMode = false;
+    this.questionslistApiService.updateCategory(this.newCategory)
+      .subscribe((categories: Category[]) => {
+        this.categories = categories;
+        this.cancelWorkWithCategory();
+        this.setDefaultCategory();
+        this.createTree();
+      });
   }
 
   deleteQuestion(id) {
@@ -111,8 +152,39 @@ export class QuestionsComponent implements OnInit {
     this.questionslistApiService.deleteCategory(id)
       .subscribe((categories: Category[]) => {
         this.categories = categories;
+        this.setDefaultCategory();
         this.createTree();
       });
   }
 
+  action(actionJSON: string) {
+    const action = JSON.parse(actionJSON);
+    switch (action.type) {
+      case 'editQuestion': {
+        this.editQuestionMode = true;
+        this.newQuestion = action.data;
+        break;
+      }
+      case 'editCategory': {
+        this.editCategoryMode = true;
+        this.newCategory = action.data;
+        break;
+      }
+      case 'deleteQuestion': {
+        this.deleteQuestion(action.data);
+        break;
+      }
+      case 'deleteCategory': {
+        this.deleteCategory(action.data);
+        break;
+      }
+    }
+  }
+
+  setDefaultCategory() {
+    if (this.categories[0]) {
+      this.newQuestion.category = this.categories[0].id;
+      this.newCategory.parent = this.categories[0].id;
+    }
+  }
 }

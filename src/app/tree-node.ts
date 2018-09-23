@@ -15,8 +15,7 @@ export class TreeNode {
     this.parent = parent;
     this.questions = [];
     this.treeNodes = [];
-    this.expanded = false;
-    this.checked = false;
+    this.expanded = true;
   }
 
   addQuestion(question: Question) {
@@ -29,18 +28,5 @@ export class TreeNode {
 
   toggle() {
     this.expanded = !this.expanded;
-  }
-
-  check() {
-    const newState = !this.checked;
-    this.checked = newState;
-    this.checkRecursive(newState);
-  }
-
-  checkRecursive(state) {
-    this.treeNodes.forEach(treeNode => {
-      treeNode.checked = state;
-      treeNode.checkRecursive(state);
-    });
   }
 }

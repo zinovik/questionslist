@@ -1,0 +1,14 @@
+.tree-node {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.list {
+  list-style-type: none;
+}
+
+.action {
+  font-size: 70%;
+  cursor: pointer;
+  text-decoration: underline;
+}

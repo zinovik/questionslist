@@ -4,5 +4,5 @@ export interface Question {
   text: string;
   difficulty: number;
   answer: string;
-  category: string;
+  category: number;
 }

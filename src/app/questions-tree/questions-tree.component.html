@@ -1,12 +1,20 @@
-<ul>
+<ul class="list">
   <li *ngFor="let treeNode of treeNodes">
-    <span><input type="checkbox" [checked]="treeNode.checked" (click)="treeNode.check()" /></span>
-    <span (click)="treeNode.toggle()">{{ treeNode.name }}</span>
+    <span>{{ treeNode.expanded ? ' - ' : ' + ' }}</span>
+    <span class="tree-node" (click)="treeNode.toggle()">{{ treeNode.name }}</span>&nbsp;
+    <a class="action" (click)="editCategory(treeNode)">edit</a>&nbsp;
+    <a class="action" (click)="deleteCategory(treeNode.id)">delete</a>
     <div *ngIf="treeNode.expanded">
-      <ul>
-        <li *ngFor="let question of treeNode.questions">{{ question.name }}</li>
+      <app-questions-tree [treeNodes]="treeNode.treeNodes" (actions)="action($event)"></app-questions-tree>
+      <ul class="list">
+        <li *ngFor="let question of treeNode.questions">
+          Name: {{ question.name }} (difficulty {{ question.difficulty }})
+          <a class="action" (click)="editQuestion(question)">edit</a>&nbsp;
+          <a class="action" (click)="deleteQuestion(question.id)">delete</a><br>
+          Question: {{ question.text }}<br>
+          Answer: {{ question.answer }}<br><br>
+        </li>
       </ul>
-      <app-questions-tree [treeNodes]="treeNode.treeNodes"></app-questions-tree>
     </div>
   </li>
 </ul>
