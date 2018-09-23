@@ -9,6 +9,7 @@ const QUESTIONS_LIST_API_URL = 'https://questionslist-api.herokuapp.com/api/v1';
 // const QUESTIONS_LIST_API_URL = 'http://localhost:3000/api/v1';
 const QUESTIONS = 'questions';
 const CATEGORIES = 'categories';
+const LOGIN = 'authorization/login';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,9 @@ export class QuestionslistApiService {
       body: { id },
     };
     return this.httpClient.delete<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, httpOptions);
+  }
+
+  login(token: string): Observable<{ given_name: string }> {
+    return this.httpClient.post<{ given_name: string }>(`${QUESTIONS_LIST_API_URL}/${LOGIN}`, { token });
   }
 }

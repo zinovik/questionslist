@@ -25,12 +25,14 @@ export class QuestionsComponent implements OnInit {
   editQuestionMode = false;
   editCategoryMode = false;
 
-  newQuestion: Question = <Question>{
-    difficulty: 1,
-  };
+  newQuestion: Question = <Question>{ difficulty: 1 };
   newCategory: Category = <Category>{};
 
   filter: string;
+
+  given_name: string;
+
+  loading: boolean;
 
   constructor(
     private questionslistApiService: QuestionslistApiService,
@@ -38,20 +40,41 @@ export class QuestionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (window.location.href.indexOf('access_token=') >= 0) {
+      const accessTokenStart = window.location.href.indexOf('access_token=') + 13;
+      const accessTokenEnd = window.location.href.indexOf('&', accessTokenStart);
+      const accessToken = window.location.href.substring(accessTokenStart, accessTokenEnd);
+      this.questionslistApiService.login(accessToken)
+        .subscribe(({ given_name }) => {
+          this.given_name = given_name;
+        });
+      this.given_name = 'logged';
+    }
+
+    this.loading = true;
     this.questionslistApiService.getQuestions()
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
+        this.given_name = data['given_name'];
         this.questions = data;
+        if (this.categories) {
+          this.loading = false;
+        }
         this.createTree();
       });
     this.questionslistApiService.getCategories()
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.categories = data;
+        if (this.questions) {
+          this.loading = false;
+        }
         this.setDefaultCategory();
         this.createTree();
       });
@@ -106,6 +129,7 @@ export class QuestionsComponent implements OnInit {
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.questions = data;
         this.cancelWorkWithQuestion();
@@ -118,6 +142,7 @@ export class QuestionsComponent implements OnInit {
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.categories = data;
         this.cancelWorkWithCategory();
@@ -147,6 +172,7 @@ export class QuestionsComponent implements OnInit {
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.questions = data;
         this.cancelWorkWithQuestion();
@@ -161,6 +187,7 @@ export class QuestionsComponent implements OnInit {
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.categories = data;
         this.cancelWorkWithCategory();
@@ -174,6 +201,7 @@ export class QuestionsComponent implements OnInit {
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.questions = data;
         this.createTree();
@@ -185,6 +213,7 @@ export class QuestionsComponent implements OnInit {
       .subscribe(({ error, data }) => {
         if (error) {
           console.log(error);
+          alert(error);
         }
         this.categories = data;
         this.setDefaultCategory();
@@ -225,5 +254,16 @@ export class QuestionsComponent implements OnInit {
       this.newQuestion.category = this.categories[0].id;
       this.newCategory.parent = this.categories[0].id;
     }
+  }
+
+  googleLogin() {
+    const clientId = '1094841489541-toms881mmbi6m04aco86qg0h43pb4iuo.apps.googleusercontent.com';
+    const redirectUrl = `https://${window.location.host}/`;
+    const loginUrl = `https://accounts.google.com/o/oauth2/auth` +
+      `?scope=email profile` +
+      `&client_id=${clientId}` +
+      `&redirect_uri=${redirectUrl}` +
+      `&response_type=token`;
+    window.open(loginUrl, '_self', 'location=no');
   }
 }

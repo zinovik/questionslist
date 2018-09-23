@@ -1,70 +1,83 @@
-<div *ngIf="!showNewQuestionForm && !editQuestionMode">
-  <button (click)="showNewQuestionForm = true">add question</button>
+<div *ngIf="loading">
+  Loading...<br>
 </div>
 
-<div *ngIf="showNewQuestionForm || editQuestionMode" class="new-form">
-  <div>{{ editQuestionMode ? 'edit question' : 'create new question' }}</div><br>
+<div *ngIf="!given_name">
+  <button (click)="googleLogin()">login with google</button>
+</div>
 
-  <label for="inputQuestionName">question name</label>:<br>
-  <input type="text" [(ngModel)]="newQuestion.name" id="inputQuestionName"><br>
+<div *ngIf="given_name">
+  logged in as {{ given_name }}<br><br>
 
-  <label for="inputQuestionText">question text</label>:<br>
-  <input type="text" [(ngModel)]="newQuestion.text" id="inputQuestionText"><br>
-
-  <label for="inputQuestionDifficulty">question difficulty</label>:<br>
-  <select [(ngModel)]="newQuestion.difficulty" id="inputQuestionDifficulty">
-    <option *ngFor="let difficulty of DIFFICULTIES" [value]="difficulty">{{ difficulty }}</option>
-  </select><br>
-
-  <label for="inputQuestionAnswer">question answer</label>:<br>
-  <input type="text" [(ngModel)]="newQuestion.answer" id="inputQuestionAnswer"><br>
-
-  <label for="inputQuestionTags">question tags</label>:<br>
-  <input type="text" [(ngModel)]="newQuestion.tags" id="inputQuestionTags"><br>
-
-  <label for="inputQuestionCategory">question category</label>:<br>
-
-  <select [(ngModel)]="newQuestion.category" id="inputQuestionCategory">
-    <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-  </select><br>
-
-  <br>
-  <div *ngIf="!editQuestionMode">
-    <button (click)="createQuestion()">create question</button>&nbsp;
-    <button (click)="cancelWorkWithQuestion()">cancel</button>
+  <div *ngIf="!showNewQuestionForm && !editQuestionMode">
+    <button (click)="showNewQuestionForm = true">add question</button>
   </div>
-  <div *ngIf="editQuestionMode">
-    <div>
-      <button (click)="updateQuestion()">update</button>&nbsp;
+
+  <div *ngIf="showNewQuestionForm || editQuestionMode" class="new-form">
+    <div>{{ editQuestionMode ? 'edit question' : 'create new question' }}</div><br>
+
+    <label for="inputQuestionName">question name</label>:<br>
+    <input type="text" [(ngModel)]="newQuestion.name" id="inputQuestionName"><br>
+
+    <label for="inputQuestionText">question text</label>:<br>
+    <input type="text" [(ngModel)]="newQuestion.text" id="inputQuestionText"><br>
+
+    <label for="inputQuestionDifficulty">question difficulty</label>:<br>
+    <select [(ngModel)]="newQuestion.difficulty" id="inputQuestionDifficulty">
+      <option *ngFor="let difficulty of DIFFICULTIES" [value]="difficulty">{{ difficulty }}</option>
+    </select><br>
+
+    <label for="inputQuestionAnswer">question answer</label>:<br>
+    <input type="text" [(ngModel)]="newQuestion.answer" id="inputQuestionAnswer"><br>
+
+    <label for="inputQuestionTags">question tags</label>:<br>
+    <input type="text" [(ngModel)]="newQuestion.tags" id="inputQuestionTags"><br>
+
+    <label for="inputQuestionCategory">question category</label>:<br>
+
+    <select [(ngModel)]="newQuestion.category" id="inputQuestionCategory">
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+    </select><br>
+
+    <br>
+    <div *ngIf="!editQuestionMode">
+      <button (click)="createQuestion()">create question</button>&nbsp;
       <button (click)="cancelWorkWithQuestion()">cancel</button>
     </div>
+    <div *ngIf="editQuestionMode">
+      <div>
+        <button (click)="updateQuestion()">update</button>&nbsp;
+        <button (click)="cancelWorkWithQuestion()">cancel</button>
+      </div>
+    </div>
+  </div><br>
+
+  <div *ngIf="!showNewCategoryForm && !editCategoryMode">
+    <button (click)="showNewCategoryForm = true">add category</button>
   </div>
-</div><br>
 
-<div *ngIf="!showNewCategoryForm && !editCategoryMode">
-  <button (click)="showNewCategoryForm = true">add category</button>
-</div>
+  <div *ngIf="showNewCategoryForm || editCategoryMode" class="new-form">
+    <div>{{ editCategoryMode ? 'edit category' : 'create new category' }}</div><br>
 
-<div *ngIf="showNewCategoryForm || editCategoryMode" class="new-form">
-  <div>{{ editCategoryMode ? 'edit category' : 'create new category' }}</div><br>
+    <label for="inputCategoryName">category name</label>:<br>
+    <input type="text" [(ngModel)]="newCategory.name" id="inputCategoryName"><br>
 
-  <label for="inputCategoryName">category name</label>:<br>
-  <input type="text" [(ngModel)]="newCategory.name" id="inputCategoryName"><br>
+    <label for="inputCategoryParent">category parent</label>:<br>
+    <select [(ngModel)]="newCategory.parent" id="inputCategoryParent">
+        <option [value]="null"></option>
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+    </select><br>
 
-  <label for="inputCategoryParent">category parent</label>:<br>
-  <select [(ngModel)]="newCategory.parent" id="inputCategoryParent">
-    <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-  </select><br>
-
-  <br>
-  <div *ngIf="!editCategoryMode">
-    <button (click)="createCategory()">create category</button>&nbsp;
-    <button (click)="cancelWorkWithCategory()">cancel</button>
-  </div>
-  <div *ngIf="editCategoryMode">
-    <div>
-      <button (click)="updateCategory()">update</button>&nbsp;
+    <br>
+    <div *ngIf="!editCategoryMode">
+      <button (click)="createCategory()">create category</button>&nbsp;
       <button (click)="cancelWorkWithCategory()">cancel</button>
+    </div>
+    <div *ngIf="editCategoryMode">
+      <div>
+        <button (click)="updateCategory()">update</button>&nbsp;
+        <button (click)="cancelWorkWithCategory()">cancel</button>
+      </div>
     </div>
   </div>
 </div><br>
@@ -72,4 +85,4 @@
 <label for="questionsFilter">questions filter</label>:<br>
 <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChanged()" id="questionsFilter">
 
-<app-questions-tree [treeNodes]="treeNodes" (actions)="action($event)"></app-questions-tree>
+<app-questions-tree [given_name]="given_name" [treeNodes]="treeNodes" (actions)="action($event)"></app-questions-tree>

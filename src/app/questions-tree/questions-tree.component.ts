@@ -11,6 +11,7 @@ import { Question } from '../question';
 export class QuestionsTreeComponent implements OnInit {
 
   @Input() treeNodes: TreeNode[];
+  @Input() given_name: string;
   @Output() actions: EventEmitter<string> = new EventEmitter();
 
   constructor(

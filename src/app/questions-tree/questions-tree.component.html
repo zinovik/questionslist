@@ -2,18 +2,22 @@
   <li *ngFor="let treeNode of treeNodes">
     <span>{{ treeNode.expanded ? ' - ' : ' + ' }}</span>
     <span class="tree-node" (click)="treeNode.toggle()">{{ treeNode.name }}</span>&nbsp;
-    <a class="action" (click)="editCategory(treeNode)">edit</a>&nbsp;
-    <a class="action" (click)="deleteCategory(treeNode.id)">delete</a>
+    <span *ngIf="given_name">
+      <a class="action" (click)="editCategory(treeNode)">edit</a>&nbsp;
+      <a class="action" (click)="deleteCategory(treeNode.id)">delete</a>
+    </span>
     <div *ngIf="treeNode.expanded">
-      <app-questions-tree [treeNodes]="treeNode.treeNodes" (actions)="action($event)"></app-questions-tree>
+      <app-questions-tree [given_name]="given_name" [treeNodes]="treeNode.treeNodes" (actions)="action($event)"></app-questions-tree>
       <ul class="list">
         <li *ngFor="let question of treeNode.questions">
-          Name: {{ question.name }} (difficulty {{ question.difficulty }})
-          <a class="action" (click)="editQuestion(question)">edit</a>&nbsp;
-          <a class="action" (click)="deleteQuestion(question.id)">delete</a><br>
-          Question: {{ question.text }}<br>
-          Tags: {{ question.tags }}<br>
-          Answer: {{ question.answer }}<br><br>
+          name: {{ question.name }} (difficulty {{ question.difficulty }})
+          <span *ngIf="given_name">
+            <a class="action" (click)="editQuestion(question)">edit</a>&nbsp;
+            <a class="action" (click)="deleteQuestion(question.id)">delete</a><br>
+          </span>
+          question: {{ question.text }}<br>
+          answer: {{ question.answer }}<br>
+          tags: {{ question.tags }}<br><br>
         </li>
       </ul>
     </div>
