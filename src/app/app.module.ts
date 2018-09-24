@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { QuestionsComponent } from './questions/questions.component';
@@ -21,6 +22,10 @@ import { QuestionsTreeComponent } from './questions-tree/questions-tree.componen
   ],
   providers: [
     QuestionslistApiService,
+    Location, {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
+    }
   ],
   bootstrap: [
     AppComponent,

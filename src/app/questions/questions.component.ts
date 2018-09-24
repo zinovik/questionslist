@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { QuestionslistApiService } from '../questionslist-api.service';
 
@@ -35,6 +36,7 @@ export class QuestionsComponent implements OnInit {
   loading: boolean;
 
   constructor(
+    private location: Location,
     private questionslistApiService: QuestionslistApiService,
   ) {
   }
@@ -47,6 +49,8 @@ export class QuestionsComponent implements OnInit {
       this.questionslistApiService.login(accessToken)
         .subscribe(({ given_name }) => {
           this.given_name = given_name;
+          this.location.replaceState(``);
+
         });
       this.given_name = 'logged';
     }
