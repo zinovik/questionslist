@@ -21,34 +21,58 @@ export class QuestionslistApiService {
   ) {
   }
 
-  getQuestions(): Observable<{ error: string, data: Question[] }> {
-    return this.httpClient.get<{ error: string, data: Question[] }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`);
+  getQuestions(): Observable<{ error: string, data: Question[], given_name: string }> {
+    const httpOptions = {
+      withCredentials: true,
+    };
+    return this.httpClient
+      .get<{ error: string, data: Question[], given_name: string }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`, httpOptions);
   }
 
   getCategories(): Observable<{ error: string, data: Category[] }> {
-    return this.httpClient.get<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`);
+    const httpOptions = {
+      withCredentials: true,
+    };
+    return this.httpClient.get<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, httpOptions);
   }
 
   createQuestion(question: Question): Observable<{ error: string, data: Question[] }> {
-    return this.httpClient.post<{ error: string, data: Question[] }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`, question);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.httpClient.post<{ error: string, data: Question[] }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`, question, httpOptions);
   }
 
   createCategory(category: Category): Observable<{ error: string, data: Category[] }> {
-    return this.httpClient.post<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, category);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.httpClient.post<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, category, httpOptions);
   }
 
   updateQuestion(question: Question): Observable<{ error: string, data: Question[] }> {
-    return this.httpClient.put<{ error: string, data: Question[] }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`, question);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.httpClient.put<{ error: string, data: Question[] }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`, question, httpOptions);
   }
 
   updateCategory(category: Category): Observable<{ error: string, data: Category[] }> {
-    return this.httpClient.put<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, category);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.httpClient.put<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, category, httpOptions);
   }
 
   deleteQuestion(id: string): Observable<{ error: string, data: Question[] }> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       body: { id },
+      withCredentials: true,
     };
     return this.httpClient.delete<{ error: string, data: Question[] }>(`${QUESTIONS_LIST_API_URL}/${QUESTIONS}`, httpOptions);
   }
@@ -57,11 +81,16 @@ export class QuestionslistApiService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       body: { id },
+      withCredentials: true,
     };
     return this.httpClient.delete<{ error: string, data: Category[] }>(`${QUESTIONS_LIST_API_URL}/${CATEGORIES}`, httpOptions);
   }
 
   login(token: string): Observable<{ given_name: string }> {
-    return this.httpClient.post<{ given_name: string }>(`${QUESTIONS_LIST_API_URL}/${LOGIN}`, { token });
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.httpClient.post<{ given_name: string }>(`${QUESTIONS_LIST_API_URL}/${LOGIN}`, { token }, httpOptions);
   }
 }

@@ -57,12 +57,12 @@ export class QuestionsComponent implements OnInit {
 
     this.loading = true;
     this.questionslistApiService.getQuestions()
-      .subscribe(({ error, data }) => {
+      .subscribe(({ error, data, given_name }) => {
         if (error) {
           console.log(error);
           alert(error);
         }
-        this.given_name = data['given_name'];
+        this.given_name = given_name;
         this.questions = data;
         if (this.categories) {
           this.loading = false;
